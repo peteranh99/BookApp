@@ -1,21 +1,37 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import * as Font from 'expo-font';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import AppLoading from 'expo-app-loading';
+import FontFamily from './app/constants/FontFamily';
+import BodyText from './app/components/BodyText';
+import TitleText from './app/components/TitleText';
+import BookNavigator from './app/navigation/BookNavigator';
+
+
+const fetchFonts = ()=>{
+    return Font.loadAsync({
+        [FontFamily.montserratMedium]: require('./assets/fonts/Montserrat/Montserrat-Medium.ttf'),
+        [FontFamily.montserratRegular]: require('./assets/fonts/Montserrat/Montserrat-Regular.ttf'),
+        [FontFamily.montserratLight]: require('./assets/fonts/Montserrat/Montserrat-Light.ttf'),
+        [FontFamily.montserratSemiBold]: require('./assets/fonts/Montserrat/Montserrat-SemiBold.ttf'),
+    });
+};
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    const [isLoading, setLoading] =useState(true);
+
+    if (isLoading) return (
+        <AppLoading startAsync={fetchFonts}
+            onFinish={()=>{setLoading(false);}}
+            onError={(error)=>{console.log(`loading error: ${error}`);
+            }} />
+    );
+
+    return (
+        <BookNavigator />
+    );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const styles = StyleSheet.create({ });
