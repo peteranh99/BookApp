@@ -4,7 +4,8 @@ import FontFamily from '../../constants/FontFamily';
 
 export default function BodyText(props) {
     return (
-        <Text style={{...styles.text, ...props.style}}>{props.children}</Text>
+        <Text {...props}
+            style={{...styles.text, ...props.style}}>{props.children}</Text>
     );
 }
 

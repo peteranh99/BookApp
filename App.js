@@ -8,7 +8,9 @@ import FontFamily from './app/constants/FontFamily';
 import BodyText from './app/components/BodyText';
 import TitleText from './app/components/TitleText';
 import BookNavigator from './app/navigation/BookNavigator';
+import { enableScreens } from 'react-native-screens';
 
+enableScreens();
 
 const fetchFonts = ()=>{
     return Font.loadAsync({

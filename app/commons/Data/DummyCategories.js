@@ -1,5 +1,5 @@
 import Category from '../../Objects/Category';
-import CATEGORIES from './categories.json';
+import CATEGORIES from './DataJson/categories.json';
 
 const DummyCategories = [];
 CATEGORIES.forEach((cat)=>{

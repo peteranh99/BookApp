@@ -1,26 +1,46 @@
-import React from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { Text, View, StyleSheet, Button, Platform, } from 'react-native';
 import BodyText from '../../components/BodyText';
 import Screen from '../../components/Screen';
 import Colors from '../../constants/Colors';
 import FontFamily from '../../constants/FontFamily';
 import DummyCategories from '../../commons/Data/DummyCategories';
-import { FlatList, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity, TouchableNativeFeedback } from 'react-native-gesture-handler';
+import MyDefaultTouchable from '../../components/MyDefaultTouchable';
 
-export default function CategoriesScreen(props) {
-
-    const GridItem = ({item, index})=>{
-        return (
-            <View style={styles.gridItem}>
-                <TouchableOpacity style={styles.gridItemTouchable}>
-                    <BodyText>{item.name}</BodyText>
-                </TouchableOpacity>
-            </View>
-        );
+const colorNames = ['red', 'orange', 'green', 'blue'];
+const GridItem = ({item, index, navigation})=>{
+    const [colorCode, setColorCode] = useState(colorNames);
+    useEffect(()=>{
+        const codeIndex = index%colorNames.length;
+        setColorCode(colorNames[codeIndex]);
+    }, []);
+    const pressHandler = ()=>{
+        navigation.navigate({
+            routeName: 'BookCategory',
+            params: {
+                categoryId: item.id
+            }
+        });
     };
 
     return (
-        <Screen >
+        <View style={styles.gridItem}>
+            <MyDefaultTouchable style={[styles.gridItemTouchable, {
+                backgroundColor: colorCode
+            }]}
+            onPress={pressHandler.bind(this)}>
+                <BodyText numberOfLines={1}
+                    style={styles.categoryName}>{item.name}</BodyText>
+            </MyDefaultTouchable>
+        </View>
+    );
+};
+
+export default function CategoriesScreen(props) {
+
+    return (
+        <Screen style={styles.screen} >
             <FlatList
                 style={styles.grid}
                 contentContainerStyle={styles.gridContainer}
@@ -28,36 +48,40 @@ export default function CategoriesScreen(props) {
                 style={styles.grid}
                 data={DummyCategories}
                 keyExtractor={(item)=>item.id}
-                renderItem={GridItem}
+                renderItem={({item, index})=>{
+                    return <GridItem navigation={props.navigation}
+                        item={item}
+                        index={index} ></GridItem>;
+                }}
             />
         </Screen>
     );
+    //renderItem={({item, index})=>{
+    //return <GridItem {...props} item={item} index={index} ></GridItem>;
+    //}}
 }
 
-CategoriesScreen.navigationOptions = {
-    title: 'Home Screen',
-    headerStyle: {
-        backgroundColor: Colors.primary,
-    },
-    headerTintColor: Colors.white,
-    headerTitleStyle: {
-        fontFamily: FontFamily.montserratSemiBold,
-    },
-};
-
 const styles = StyleSheet.create({
+    screen:{
+    },
     grid: {
         flex: 1,
     },
     gridItem:{
         flex: 1,
         margin: 10,
+        borderRadius: 20,
+        overflow: 'hidden'
     },
     gridItemTouchable: {
-        height: '100%',
-        width: '100%',
         backgroundColor: Colors.default,
-        padding: 20,
+        padding: 10,
         height: 100,
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        elevation:6 
+    },
+    categoryName: {
+        color: Colors.white
     }
 });
