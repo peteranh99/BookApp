@@ -11,7 +11,8 @@ export default function BookList(props) {
             props.navigation.navigate({
                 routeName: 'BookDetail',
                 params: {
-                    bookId: item.id
+                    bookId: item.id,
+                    bookTitle: item.title,
                 }
             });
         };

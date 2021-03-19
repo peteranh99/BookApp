@@ -4,9 +4,9 @@
     "slug": "BookApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/book.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/book-splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,9 +21,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/book.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.webfullstack99.BookApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"

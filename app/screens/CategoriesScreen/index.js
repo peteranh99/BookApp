@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Text, View, StyleSheet, Button, Platform, } from 'react-native';
+import { Text, View, StyleSheet, Button, Platform, LogBox, } from 'react-native';
 import BodyText from '../../components/BodyText';
 import Screen from '../../components/Screen';
 import Colors from '../../constants/Colors';
@@ -7,6 +7,11 @@ import FontFamily from '../../constants/FontFamily';
 import DummyCategories from '../../commons/Data/DummyCategories';
 import { FlatList, TouchableOpacity, TouchableNativeFeedback } from 'react-native-gesture-handler';
 import MyDefaultTouchable from '../../components/MyDefaultTouchable';
+import DrawerToggler from '../../components/DrawerToggler';
+import TitleText from '../../components/TitleText';
+LogBox.ignoreLogs([
+    'Your project is accessing the following APIs from a deprecated global rather than a module import: Constants (expo-constants).',
+]);
 
 const colorNames = ['red', 'orange', 'green', 'blue'];
 const GridItem = ({item, index, navigation})=>{
@@ -30,8 +35,8 @@ const GridItem = ({item, index, navigation})=>{
                 backgroundColor: colorCode
             }]}
             onPress={pressHandler.bind(this)}>
-                <BodyText numberOfLines={1}
-                    style={styles.categoryName}>{item.name}</BodyText>
+                <TitleText numberOfLines={1}
+                    style={styles.categoryName}>{item.name}</TitleText>
             </MyDefaultTouchable>
         </View>
     );
@@ -61,6 +66,12 @@ export default function CategoriesScreen(props) {
     //}}
 }
 
+CategoriesScreen.navigationOptions = (props)=>{
+    return {
+        headerLeft: DrawerToggler.bind(this, props)
+    };
+};
+
 const styles = StyleSheet.create({
     screen:{
     },
@@ -82,6 +93,6 @@ const styles = StyleSheet.create({
         elevation:6 
     },
     categoryName: {
-        color: Colors.white
+        color: Colors.black
     }
 });

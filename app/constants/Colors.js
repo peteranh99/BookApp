@@ -5,10 +5,12 @@ export default {
     black: '#000',
     default: '#dddddd',
     light: '#ececec',
+    dodgerBlue: 'dodgerblue',
 
     // colors
     red: '#ee4035',
     orange: '#f37736',
     green: '#7bc043',
     blue: '#0392cf',
+    grey: 'grey',
 };

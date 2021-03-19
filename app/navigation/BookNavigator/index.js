@@ -12,6 +12,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'; 
 import { Platform } from 'react-native';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+import FilterScreen from '../../screens/FilterScreen';
+import BodyText from '../../components/BodyText';
 
 const defaultNavigationOptions ={
     headerTitle: 'Default title',
@@ -37,9 +40,7 @@ const BookNavigator = createStackNavigator({
     BookDetail: {
         screen: BookDetailScreen,
     },
-}, { defaultNavigationOptions, navigationOptions: {
-    tabBarLabel: 'Categories'
-} });
+}, { defaultNavigationOptions,  });
 
 const FavoriteNavigator = createStackNavigator({
     Favorite: {
@@ -63,7 +64,8 @@ const routeConfigs = {
                         size={24}
                         color={tabInfo.tintColor} />
                 );
-            }
+            },
+            tabBarLabel: <BodyText>Categories</BodyText>
         }
     },
     Favorite:  {
@@ -77,12 +79,13 @@ const routeConfigs = {
                         color={tabInfo.tintColor} />
                 );
             },
-            tabBarColor: Colors.secondary
+            tabBarColor: Colors.secondary,
+            tabBarLabel: <BodyText>Categories</BodyText>
         }
     },
 };
 
-const BottomTabNavigator =Platform.OS === 'android' && Platform.Version >=21?
+const BooksFavNavigator =Platform.OS === 'android' && Platform.Version >=21?
     // bottom tab bar for android
     createMaterialBottomTabNavigator(routeConfigs, {
         activeColor: Colors.white,
@@ -96,4 +99,54 @@ const BottomTabNavigator =Platform.OS === 'android' && Platform.Version >=21?
         }
     });
 
-export default createAppContainer(BottomTabNavigator);
+const FilterNavigator = createStackNavigator({
+    Filter: {
+        screen:FilterScreen,
+        navigationOptions: {
+            headerTitle: 'Filter Books'
+        }
+    },
+}, { defaultNavigationOptions });
+
+const MainNavigator = createDrawerNavigator({
+    BooksFav: {
+        screen: BooksFavNavigator,
+        navigationOptions: {
+            drawerLabel:(props)=>{
+                return <BodyText style={{color: props.tintColor}}>Books</BodyText>;
+            },
+            drawerIcon: (props)=>{
+                return (
+                    <MaterialCommunityIcons name="bookshelf"
+                        size={24}
+                        color={props.tintColor} />
+                );
+            },
+        }
+    },
+    Filter: {
+        screen:FilterNavigator,
+        navigationOptions: {
+            drawerLabel:(props)=>{
+                return <BodyText style={{color: props.tintColor}}>Filter</BodyText>;
+            },
+            drawerIcon: (props)=>{
+                return (
+                    <Ionicons 
+                        name="filter"
+                        size={25}
+                        color={props.tintColor} />
+                );
+            }
+        }
+    }
+}, {
+    contentOptions: {
+        itemStyle: {
+            minHeight: 60
+        },
+        activeTintColor: Colors.secondary,
+    }
+});
+
+export default createAppContainer(MainNavigator);
